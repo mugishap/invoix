@@ -9,7 +9,7 @@
       <div class="right flex ">
         <div @click="toggleFilterMenu()" class="filter flex">
           <span>Filter by status</span>
-          <img src="@/assets/icon-arrow-down.svg" alt="">
+          <img src="@/assets/icon-arrow-down.svg" alt="" />
           <ul v-show="filterMenu" class="filter-menu">
             <li>Draft</li>
             <li>Pending</li>
@@ -19,35 +19,54 @@
         </div>
         <div @click="newInvoice()" class="button flex">
           <div class="inner-button flex">
-            <img src="@/assets/icon-plus.svg" alt="">
+            <img src="@/assets/icon-plus.svg" alt="" />
           </div>
           <span>New invoice</span>
         </div>
       </div>
     </div>
+    <div v-if="invoiceData.length > 0">
+      <Invoice
+        v-for="(invoice, index) in invoiceData"
+        :invoice="invoice"
+        :key="index"
+      />
+    </div>
+    <div v-else class="empty flex flex-column">
+      <img src="@/assets/illustration-empty.svg" alt="" />
+      <h3>There is nothing here</h3>
+      <p>
+        Create new invoice by clicking the New Invoice button
+      </p>
+    </div>
   </div>
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
-
+import { mapMutations, mapState } from "vuex";
+import Invoice from "./../components/Invoice.vue";
 export default {
   data() {
     return {
-      filterMenu: null
-    }
+      filterMenu: null,
+    };
   },
   name: "Home",
-  components: {},
+  components: {
+    Invoice,
+  },
   methods: {
-    ...mapMutations(['TOGGLE_INVOICE']),
-    newInvoice() { 
-      this.TOGGLE_INVOICE()
+    ...mapMutations(["TOGGLE_INVOICE"]),
+    newInvoice() {
+      this.TOGGLE_INVOICE();
     },
     toggleFilterMenu() {
-      this.filterMenu = !this.filterMenu
-    }
-  }
+      this.filterMenu = !this.filterMenu;
+    },
+  },
+  computed: {
+    ...mapState(["invoiceData"]),
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -92,7 +111,8 @@ export default {
           top: 25px;
           list-style: none;
           background-color: #1e2139;
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+            0 2px 4px -1px rgba(0, 0, 0, 0.06);
 
           li {
             cursor: pointer;
