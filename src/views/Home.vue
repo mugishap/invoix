@@ -29,6 +29,8 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
+
 export default {
   data() {
     return {
@@ -38,17 +40,19 @@ export default {
   name: "Home",
   components: {},
   methods: {
-    newInvoice() { },
+    ...mapMutations(['TOGGLE_INVOICE']),
+    newInvoice() { 
+      this.TOGGLE_INVOICE()
+    },
     toggleFilterMenu() {
       this.filterMenu = !this.filterMenu
     }
   }
 };
 </script>
-
 <style lang="scss" scoped>
 .home {
-  color: white;
+  color: #fff;
 
   .header {
     margin-bottom: 65px;
@@ -65,7 +69,6 @@ export default {
       .button,
       .filter {
         align-items: center;
-        cursor: pointer;
 
         span {
           font-size: 12px;
@@ -75,6 +78,7 @@ export default {
       .filter {
         position: relative;
         margin-right: 40px;
+        cursor: pointer;
 
         img {
           margin-left: 12px;
@@ -88,7 +92,7 @@ export default {
           top: 25px;
           list-style: none;
           background-color: #1e2139;
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.6);
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 
           li {
             cursor: pointer;
@@ -97,7 +101,7 @@ export default {
 
             &:hover {
               color: #1e2139;
-              background-color: white;
+              background-color: #fff;
             }
           }
         }
@@ -110,7 +114,7 @@ export default {
 
         .inner-button {
           margin-right: 8px;
-          border-radius: 50px;
+          border-radius: 50%;
           padding: 8px;
           align-items: center;
           justify-content: center;
@@ -122,6 +126,29 @@ export default {
           }
         }
       }
+    }
+  }
+
+  .empty {
+    margin-top: 160px;
+    align-items: center;
+
+    img {
+      width: 214px;
+      height: 200px;
+    }
+
+    h3 {
+      font-size: 20px;
+      margin-top: 40px;
+    }
+
+    p {
+      text-align: center;
+      max-width: 224px;
+      font-size: 12px;
+      font-weight: 300;
+      margin-top: 16px;
     }
   }
 }

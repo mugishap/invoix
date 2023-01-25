@@ -3,6 +3,9 @@
     <div v-if="!mobile" class="app flex flex-column">
       <Navigation />
       <div class="app-content flex flex-col">
+        <transition name="invoice">
+          <InvoiceModal v-if="invoiceModal" />
+        </transition>
         <router-view />
       </div>
     </div>
@@ -14,7 +17,11 @@
 </template>
 
 <script>
+
 import Navigation from './components/Navigation.vue'
+import InvoiceModal from './components/InvoiceModal.vue'
+import { mapState } from 'vuex'
+
 export default {
   data() {
     return {
@@ -22,7 +29,8 @@ export default {
     }
   },
   components: {
-    Navigation
+    Navigation,
+    InvoiceModal
   },
   created() {
     this.checkScreen()
@@ -38,6 +46,9 @@ export default {
       this.mobile = false
     }
   },
+  computed: {
+    ...mapState(['invoiceModal'])
+  }
 }
 </script>
 
@@ -53,19 +64,17 @@ export default {
 
 .app {
   background-color: #141625;
-  min-width: 100vh;
-  flex-direction: column;
+  min-height: 100vh;
 
-  @media (min-width:900px) {
+  @media (min-width: 900px) {
     flex-direction: row !important;
-    ;
   }
-}
 
-.app-content {
-  padding: 0 20px;
-  flex: 1;
-  position: relative;
+  .app-content {
+    padding: 0 20px;
+    flex: 1;
+    position: relative;
+  }
 }
 
 .mobile-message {
@@ -74,11 +83,22 @@ export default {
   align-items: center;
   height: 100vh;
   background-color: #141625;
-  color: white;
+  color: #fff;
 
   p {
     margin-top: 16px;
   }
+}
+
+// animated invoice
+.invoice-enter-active,
+.invoice-leave-active {
+  transition: 0.8s ease all;
+}
+
+.invoice-enter-from,
+.invoice-leave-to {
+  transform: translateX(-700px);
 }
 
 button,
@@ -113,7 +133,6 @@ button,
 }
 
 // utility classes
-
 .flex {
   display: flex;
 }
@@ -139,7 +158,6 @@ button,
 }
 
 // Status Button Styling
-
 .status-button {
   &::before {
     content: "";
